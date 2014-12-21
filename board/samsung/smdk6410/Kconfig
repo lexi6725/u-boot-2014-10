@@ -1,0 +1,18 @@
+if TARGET_SMDK6410
+
+config SYS_CPU
+	default "arm1176"
+
+config SYS_BOARD
+	default "smdk6410"
+
+config SYS_VENDOR
+	default "samsung"
+
+config SYS_SOC
+	default "s3c64x0"
+
+config SYS_CONFIG_NAME
+	default "smdk6410"
+
+endif
