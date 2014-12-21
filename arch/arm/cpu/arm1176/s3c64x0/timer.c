@@ -17,7 +17,7 @@
 #ifdef CONFIG_S3C24X0
 
 #include <asm/io.h>
-#include <asm/arch/s3c24x0_cpu.h>
+#include <asm/arch/s3c64x0_cpu.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 

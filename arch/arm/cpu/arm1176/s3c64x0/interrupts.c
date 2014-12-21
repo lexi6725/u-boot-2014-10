@@ -15,7 +15,7 @@
 
 #include <common.h>
 
-#include <asm/arch/s3c24x0_cpu.h>
+#include <asm/arch/s3c64x0_cpu.h>
 #include <asm/proc-armv/ptrace.h>
 
 void do_irq (struct pt_regs *pt_regs)
