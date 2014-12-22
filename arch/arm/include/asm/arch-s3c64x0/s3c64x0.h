@@ -146,26 +146,10 @@ struct s3c2410_nand {
 	u32	nfecc;
 };
 #endif
-#ifdef CONFIG_S3C2440
-/* NAND FLASH (see S3C2440 manual chapter 6) */
-struct s3c2440_nand {
-	u32	nfconf;
-	u32	nfcont;
-	u32	nfcmd;
-	u32	nfaddr;
-	u32	nfdata;
-	u32	nfeccd0;
-	u32	nfeccd1;
-	u32	nfeccd;
-	u32	nfstat;
-	u32	nfstat0;
-	u32	nfstat1;
-};
-#endif
 
 
 /* UART (see manual chapter 11) */
-struct s3c24x0_uart {
+struct s3c64x0_uart {
 	u32	ulcon;
 	u32	ucon;
 	u32	ufcon;
@@ -357,7 +341,7 @@ struct s3c24x0_i2s {
 
 /* I/O PORT (see manual chapter 9) */
 struct s3c24x0_gpio {
-#ifdef CONFIG_S3C2400
+#ifdef CONFIG_S3C6400
 	u32	pacon;
 	u32	padat;
 
@@ -390,7 +374,7 @@ struct s3c24x0_gpio {
 	u32	misccr;
 	u32	extint;
 #endif
-#ifdef CONFIG_S3C2410
+#ifdef CONFIG_S3C6410
 	u32	gpacon;
 	u32	gpadat;
 	u32	res1[2];
@@ -440,7 +424,7 @@ struct s3c24x0_gpio {
 	u32	gstatus3;
 	u32	gstatus4;
 #endif
-#if defined(CONFIG_S3C2440)
+#if defined(CONFIG_S3C6440)
 	u32	gpacon;
 	u32	gpadat;
 	u32	res1[2];
@@ -614,7 +598,7 @@ struct s3c24x0_spi_channel {
 };
 
 struct s3c24x0_spi {
-	struct s3c24x0_spi_channel	ch[S3C24X0_SPI_CHANNELS];
+	struct s3c24x0_spi_channel	ch[S3C64X0_SPI_CHANNELS];
 };
 
 

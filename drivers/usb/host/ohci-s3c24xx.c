@@ -19,9 +19,13 @@
 #include <common.h>
 /* #include <pci.h> no PCI on the S3C24X0 */
 
-#if defined(CONFIG_USB_OHCI) && defined(CONFIG_S3C24X0)
+#if defined(CONFIG_USB_OHCI) && (defined(CONFIG_S3C24X0)||defined(CONFIG_S3C64X0))
 
+#if defined(CONFIG_S3C24X0)
 #include <asm/arch/s3c24x0_cpu.h>
+#elif defined(CONFIG_S3C64X0)
+#include <asm/arch/s3c64x0_cpu.h>
+#endif
 #include <asm/io.h>
 #include <malloc.h>
 #include <usb.h>
@@ -1593,7 +1597,11 @@ int usb_lowlevel_init(int index, enum usb_init_type init, void **controller)
 	gohci.disabled = 1;
 	gohci.sleeping = 0;
 	gohci.irq = -1;
+	#if defined(CONFIG_S3C24X0)
 	gohci.regs = (struct ohci_regs *)S3C24X0_USB_HOST_BASE;
+	#elif defined(CONFIG_S3C64X0)
+	gohci.regs = (struct ohci_regs *)S3C64X0_USB_HOST_BASE;
+	#endif
 
 	gohci.flags = 0;
 	gohci.slot_name = "s3c2400";

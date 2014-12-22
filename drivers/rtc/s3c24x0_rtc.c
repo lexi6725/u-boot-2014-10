@@ -13,9 +13,11 @@
 #include <command.h>
 
 #if (defined(CONFIG_CMD_DATE))
-
+#ifdef CONFIG_S3C24X0
 #include <asm/arch/s3c24x0_cpu.h>
-
+#elif defined(CONFIG_S3C64X0)
+#include <asm/arch/s3c64x0_cpu.h>
+#endif
 #include <rtc.h>
 #include <asm/io.h>
 #include <linux/compiler.h>

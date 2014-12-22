@@ -23,7 +23,7 @@
 #define CONFIG_SMDK6410		/* on a SAMSUNG SMDK2410 Board */
 
 #define CONFIG_SYS_TEXT_BASE	0x57E00000
-#define CONFIG_SYS_PHY_UBOOT_BASE CONFIG_SYS_TEXT_BASE
+#define CONFIG_SYS_UBOOT_BASE CONFIG_SYS_TEXT_BASE
 
 #define CONFIG_SYS_ARM_CACHE_WRITETHROUGH
 
@@ -44,7 +44,7 @@
 /*
  * select serial console configuration
  */
-#define CONFIG_S3C24X0_SERIAL
+#define CONFIG_S3C64X0_SERIAL
 #define CONFIG_SERIAL1		1	/* we use SERIAL 1 on SMDK2410 */
 
 /************************************************************
@@ -82,7 +82,7 @@
 #define CONFIG_CMD_DATE
 #define CONFIG_CMD_DHCP
 #define CONFIG_CMD_ELF
-#define CONFIG_CMD_NAND
+//#define CONFIG_CMD_NAND
 #define CONFIG_CMD_PING
 #define CONFIG_CMD_REGINFO
 #define CONFIG_CMD_USB
@@ -172,8 +172,8 @@
  * NAND configuration
  */
 #ifdef CONFIG_CMD_NAND
-#define CONFIG_NAND_S3C2410
-#define CONFIG_SYS_S3C2410_NAND_HWECC
+#define CONFIG_NAND_S3C6410
+#define CONFIG_SYS_S3C6410_NAND_HWECC
 #define CONFIG_SYS_MAX_NAND_DEVICE	1
 #define CONFIG_SYS_NAND_BASE		0x4E000000
 #endif
@@ -183,12 +183,12 @@
  */
 #define CONFIG_CMD_FAT
 #define CONFIG_CMD_EXT2
-#define CONFIG_CMD_UBI
-#define CONFIG_CMD_UBIFS
+//#define CONFIG_CMD_UBI
+//#define CONFIG_CMD_UBIFS
 #define CONFIG_CMD_MTDPARTS
 #define CONFIG_MTD_DEVICE
 #define CONFIG_MTD_PARTITIONS
-#define CONFIG_YAFFS2
+//#define CONFIG_YAFFS2
 #define CONFIG_RBTREE
 
 /* additions for new relocation code, must be added to all boards */

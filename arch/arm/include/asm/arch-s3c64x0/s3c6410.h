@@ -15,8 +15,8 @@
 #ifndef __S3C6410_H__
 #define __S3C6410_H__
 
-#define S3C24X0_UART_CHANNELS	3
-#define S3C24X0_SPI_CHANNELS	2
+#define S3C64X0_UART_CHANNELS	3
+#define S3C64X0_SPI_CHANNELS	2
 
 /* S3C2410 only supports 512 Byte HW ECC */
 #define S3C2410_ECCSIZE		512
@@ -26,7 +26,6 @@ enum s3c64x0_uarts_nr {
 	S3C64X0_UART0,
 	S3C64X0_UART1,
 	S3C64X0_UART2,
-	S3C64X0_UART3
 };
 
 /* S3C2410 device base addresses */
@@ -51,7 +50,7 @@ enum s3c64x0_uarts_nr {
 
 
 /* include common stuff */
-#include <asm/arch/s3c24x0.h>
+#include <asm/arch/s3c64x0.h>
 
 
 static inline struct s3c24x0_memctl *s3c24x0_get_base_memctl(void)
@@ -61,7 +60,7 @@ static inline struct s3c24x0_memctl *s3c24x0_get_base_memctl(void)
 
 static inline struct s3c24x0_usb_host *s3c24x0_get_base_usb_host(void)
 {
-	return (struct s3c24x0_usb_host *)S3C24X0_USB_HOST_BASE;
+	return (struct s3c24x0_usb_host *)S3C64X0_USB_HOST_BASE;
 }
 
 static inline struct s3c24x0_interrupt *s3c24x0_get_base_interrupt(void)
@@ -71,17 +70,17 @@ static inline struct s3c24x0_interrupt *s3c24x0_get_base_interrupt(void)
 
 static inline struct s3c24x0_dmas *s3c24x0_get_base_dmas(void)
 {
-	return (struct s3c24x0_dmas *)S3C24X0_DMA_BASE;
+	return (struct s3c24x0_dmas *)S3C64X0_DMA_BASE;
 }
 
 static inline struct s3c24x0_clock_power *s3c24x0_get_base_clock_power(void)
 {
-	return (struct s3c24x0_clock_power *)S3C24X0_CLOCK_POWER_BASE;
+	return (struct s3c24x0_clock_power *)S3C64X0_CLOCK_POWER_BASE;
 }
 
 static inline struct s3c24x0_lcd *s3c24x0_get_base_lcd(void)
 {
-	return (struct s3c24x0_lcd *)S3C24X0_LCD_BASE;
+	return (struct s3c24x0_lcd *)S3C64X0_LCD_BASE;
 }
 
 static inline struct s3c2410_nand *s3c2410_get_base_nand(void)
@@ -89,10 +88,10 @@ static inline struct s3c2410_nand *s3c2410_get_base_nand(void)
 	return (struct s3c2410_nand *)S3C2410_NAND_BASE;
 }
 
-static inline struct s3c24x0_uart
-	*s3c24x0_get_base_uart(enum s3c24x0_uarts_nr n)
+static inline struct s3c64x0_uart
+	*s3c64x0_get_base_uart(enum s3c64x0_uarts_nr n)
 {
-	return (struct s3c24x0_uart *)(S3C24X0_UART_BASE + (n * 0x4000));
+	return (struct s3c64x0_uart *)(S3C24X0_UART_BASE + (n * 0x4000));
 }
 
 static inline struct s3c24x0_timers *s3c24x0_get_base_timers(void)
@@ -112,12 +111,12 @@ static inline struct s3c24x0_watchdog *s3c24x0_get_base_watchdog(void)
 
 static inline struct s3c24x0_i2c *s3c24x0_get_base_i2c(void)
 {
-	return (struct s3c24x0_i2c *)S3C24X0_I2C_BASE;
+	return (struct s3c24x0_i2c *)S3C64X0_I2C_BASE;
 }
 
 static inline struct s3c24x0_i2s *s3c24x0_get_base_i2s(void)
 {
-	return (struct s3c24x0_i2s *)S3C24X0_I2S_BASE;
+	return (struct s3c24x0_i2s *)S3C64X0_I2S_BASE;
 }
 
 static inline struct s3c24x0_gpio *s3c24x0_get_base_gpio(void)
@@ -132,12 +131,12 @@ static inline struct s3c24x0_rtc *s3c24x0_get_base_rtc(void)
 
 static inline struct s3c2410_adc *s3c2410_get_base_adc(void)
 {
-	return (struct s3c2410_adc *)S3C2410_ADC_BASE;
+	return (struct s3c2410_adc *)S3C6410_ADC_BASE;
 }
 
 static inline struct s3c24x0_spi *s3c24x0_get_base_spi(void)
 {
-	return (struct s3c24x0_spi *)S3C24X0_SPI_BASE;
+	return (struct s3c24x0_spi *)S3C64X0_SPI_BASE;
 }
 
 static inline struct s3c24x0_sdi *s3c24x0_get_base_sdi(void)
