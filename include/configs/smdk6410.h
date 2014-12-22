@@ -37,30 +37,30 @@
 /*
  * Hardware drivers
  */
-#define CONFIG_CS8900		/* we have a CS8900 on-board */
-#define CONFIG_CS8900_BASE	0x19000300
-#define CONFIG_CS8900_BUS16	/* the Linux driver does accesses as shorts */
+#define CONFIG_DRIVER_DM9000		/* we have a CS8900 on-board */
+#define CONFIG_DM9000_BASE	0x18000300
+#define CONFIG_DM9000_USE_16BIT	1	/* the Linux driver does accesses as shorts */
 
 /*
  * select serial console configuration
  */
-#define CONFIG_S3C64X0_SERIAL
+#define CONFIG_S3C24X0_SERIAL
 #define CONFIG_SERIAL1		1	/* we use SERIAL 1 on SMDK2410 */
 
 /************************************************************
  * USB support (currently only works with D-cache off)
  ************************************************************/
-#define CONFIG_USB_OHCI
+/*#define CONFIG_USB_OHCI
 #define CONFIG_USB_OHCI_S3C24XX
 #define CONFIG_USB_KEYBOARD
 #define CONFIG_USB_STORAGE
 #define CONFIG_DOS_PARTITION
-
+*/
 /************************************************************
  * RTC
  ************************************************************/
-#define CONFIG_RTC_S3C24X0
-
+/*#define CONFIG_RTC_S3C24X0
+*/
 
 #define CONFIG_BAUDRATE		115200
 
@@ -76,13 +76,13 @@
  * Command line configuration.
  */
 #include <config_cmd_default.h>
-
-#define CONFIG_CMD_BSP
+/*
+#define CONFIG_CMD_BSP*/
 #define CONFIG_CMD_CACHE
 #define CONFIG_CMD_DATE
 #define CONFIG_CMD_DHCP
 #define CONFIG_CMD_ELF
-//#define CONFIG_CMD_NAND
+#define CONFIG_CMD_NAND
 #define CONFIG_CMD_PING
 #define CONFIG_CMD_REGINFO
 #define CONFIG_CMD_USB
@@ -108,7 +108,7 @@
  * Miscellaneous configurable options
  */
 #define CONFIG_SYS_LONGHELP		/* undef to save memory */
-#define CONFIG_SYS_PROMPT	"SMDK2410 # "
+#define CONFIG_SYS_PROMPT	"SMDK6410 # "
 #define CONFIG_SYS_CBSIZE	256
 /* Print Buffer Size */
 #define CONFIG_SYS_PBSIZE	(CONFIG_SYS_CBSIZE + \
@@ -118,10 +118,10 @@
 
 #define CONFIG_DISPLAY_CPUINFO				/* Display cpu info */
 
-#define CONFIG_SYS_MEMTEST_START	0x30000000	/* memtest works on */
-#define CONFIG_SYS_MEMTEST_END		0x33F00000	/* 63 MB in DRAM */
+#define CONFIG_SYS_MEMTEST_START	0x50000000	/* memtest works on */
+#define CONFIG_SYS_MEMTEST_END		0x5FFFFFFF	/* 256MB in DRAM */
 
-#define CONFIG_SYS_LOAD_ADDR		0x30800000
+#define CONFIG_SYS_LOAD_ADDR		0x50008000
 
 /* support additional compression methods */
 #define CONFIG_BZIP2
@@ -132,8 +132,8 @@
  * Physical Memory Map
  */
 #define CONFIG_NR_DRAM_BANKS	1          /* we have 1 bank of DRAM */
-#define PHYS_SDRAM_1		0x30000000 /* SDRAM Bank #1 */
-#define PHYS_SDRAM_1_SIZE	0x04000000 /* 64 MB */
+#define PHYS_SDRAM_1		CONFIG_SYS_MEMTEST_START /* SDRAM Bank #1 */
+#define PHYS_SDRAM_1_SIZE	0x0FFFFFFF /* 64 MB */
 
 #define PHYS_FLASH_1		0x00000000 /* Flash Bank #0 */
 
@@ -143,13 +143,14 @@
  * FLASH and environment organization
  */
 
-#define CONFIG_SYS_FLASH_CFI
-#define CONFIG_FLASH_CFI_DRIVER
-#define CONFIG_FLASH_CFI_LEGACY
-#define CONFIG_SYS_FLASH_LEGACY_512Kx16
-#define CONFIG_FLASH_SHOW_PROGRESS	45
+//#define CONFIG_SYS_FLASH_CFI
+#define CONFIG_SYS_NO_FLASH
+//#define CONFIG_FLASH_CFI_DRIVER
+//#define CONFIG_FLASH_CFI_LEGACY
+//#define CONFIG_SYS_FLASH_LEGACY_512Kx16
+//#define CONFIG_FLASH_SHOW_PROGRESS	45
 
-#define CONFIG_SYS_MAX_FLASH_BANKS	1
+#define CONFIG_SYS_MAX_FLASH_BANKS	0
 #define CONFIG_SYS_FLASH_BANKS_LIST     { CONFIG_SYS_FLASH_BASE }
 #define CONFIG_SYS_MAX_FLASH_SECT	(19)
 
@@ -188,7 +189,7 @@
 #define CONFIG_CMD_MTDPARTS
 #define CONFIG_MTD_DEVICE
 #define CONFIG_MTD_PARTITIONS
-//#define CONFIG_YAFFS2
+#define CONFIG_YAFFS2
 #define CONFIG_RBTREE
 
 /* additions for new relocation code, must be added to all boards */
