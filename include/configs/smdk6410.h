@@ -37,30 +37,33 @@
 /*
  * Hardware drivers
  */
-#define CONFIG_DRIVER_DM9000		/* we have a CS8900 on-board */
-#define CONFIG_DM9000_BASE	0x18000300
-#define CONFIG_DM9000_USE_16BIT	1	/* the Linux driver does accesses as shorts */
-
+//lexi Add DM9000
+#define CONFIG_DRIVER_DM9000	1	/* we have a SMC9115 on-board */
+#define CONFIG_DM9000_BASE 0x18000300 /*XMOCSN1*/
+#define DM9000_DATA 0x18000304 /*ADDR2*/
+#define DM9000_IO CONFIG_DM9000_BASE
+#define CONFIG_DM9000_USE_16BIT 1
+//lexi Add DM9000
 /*
  * select serial console configuration
  */
-#define CONFIG_S3C24X0_SERIAL
+#define CONFIG_S3C64X0_SERIAL
 #define CONFIG_SERIAL1		1	/* we use SERIAL 1 on SMDK2410 */
 
 /************************************************************
  * USB support (currently only works with D-cache off)
  ************************************************************/
-/*#define CONFIG_USB_OHCI
+#define CONFIG_USB_OHCI
 #define CONFIG_USB_OHCI_S3C24XX
 #define CONFIG_USB_KEYBOARD
 #define CONFIG_USB_STORAGE
 #define CONFIG_DOS_PARTITION
-*/
+
 /************************************************************
  * RTC
  ************************************************************/
-/*#define CONFIG_RTC_S3C24X0
-*/
+#define CONFIG_RTC_S3C24X0
+
 
 #define CONFIG_BAUDRATE		115200
 
@@ -143,12 +146,12 @@
  * FLASH and environment organization
  */
 
-//#define CONFIG_SYS_FLASH_CFI
-#define CONFIG_SYS_NO_FLASH
-//#define CONFIG_FLASH_CFI_DRIVER
-//#define CONFIG_FLASH_CFI_LEGACY
-//#define CONFIG_SYS_FLASH_LEGACY_512Kx16
-//#define CONFIG_FLASH_SHOW_PROGRESS	45
+#define CONFIG_SYS_FLASH_CFI
+//#define CONFIG_SYS_NO_FLASH
+#define CONFIG_FLASH_CFI_DRIVER
+#define CONFIG_FLASH_CFI_LEGACY
+#define CONFIG_SYS_FLASH_LEGACY_512Kx16
+#define CONFIG_FLASH_SHOW_PROGRESS	45
 
 #define CONFIG_SYS_MAX_FLASH_BANKS	0
 #define CONFIG_SYS_FLASH_BANKS_LIST     { CONFIG_SYS_FLASH_BASE }
@@ -173,7 +176,7 @@
  * NAND configuration
  */
 #ifdef CONFIG_CMD_NAND
-#define CONFIG_NAND_S3C6410
+//#define CONFIG_NAND_S3C6410
 #define CONFIG_SYS_S3C6410_NAND_HWECC
 #define CONFIG_SYS_MAX_NAND_DEVICE	1
 #define CONFIG_SYS_NAND_BASE		0x4E000000

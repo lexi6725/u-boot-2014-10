@@ -237,31 +237,31 @@ static inline void serial_puts_dev(int dev_index, const char *s)
 }
 
 DECLARE_S3C_SERIAL_FUNCTIONS(0);
-struct serial_device s3c24xx_serial0_device =
+struct serial_device s3c64xx_serial0_device =
 INIT_S3C_SERIAL_STRUCTURE(0, "s3ser0");
 DECLARE_S3C_SERIAL_FUNCTIONS(1);
-struct serial_device s3c24xx_serial1_device =
+struct serial_device s3c64xx_serial1_device =
 INIT_S3C_SERIAL_STRUCTURE(1, "s3ser1");
 DECLARE_S3C_SERIAL_FUNCTIONS(2);
-struct serial_device s3c24xx_serial2_device =
+struct serial_device s364xx_serial2_device =
 INIT_S3C_SERIAL_STRUCTURE(2, "s3ser2");
 
 __weak struct serial_device *default_serial_console(void)
 {
 #if defined(CONFIG_SERIAL1)
-	return &s3c24xx_serial0_device;
+	return &s3c64xx_serial0_device;
 #elif defined(CONFIG_SERIAL2)
-	return &s3c24xx_serial1_device;
+	return &s3c64xx_serial1_device;
 #elif defined(CONFIG_SERIAL3)
-	return &s3c24xx_serial2_device;
+	return &s364xx_serial2_device;
 #else
 #error "CONFIG_SERIAL? missing."
 #endif
 }
 
-void s3c24xx_serial_initialize(void)
+void s3c64xx_serial_initialize(void)
 {
-	serial_register(&s3c24xx_serial0_device);
-	serial_register(&s3c24xx_serial1_device);
-	serial_register(&s3c24xx_serial2_device);
+	serial_register(&s3c64xx_serial0_device);
+	serial_register(&s3c64xx_serial1_device);
+	serial_register(&s364xx_serial2_device);
 }

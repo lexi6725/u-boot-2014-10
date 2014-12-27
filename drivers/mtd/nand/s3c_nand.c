@@ -22,7 +22,7 @@
 
 #include <common.h>
 
-#if (CONFIG_COMMANDS & CFG_CMD_NAND)
+#ifdef CONFIG_CMD_NAND
 #include <nand.h>
 #include <regs.h>
 
@@ -944,11 +944,12 @@ static void s3c_nand_write_page_4bit(struct mtd_info *mtd, struct nand_chip *chi
 void board_nand_init(struct nand_chip *nand)
 {
 #if defined(CFG_NAND_HWECC)
-    int i;
-    u_char tmp;
-    u_char dev_id;
-    struct nand_flash_dev *type = NULL;
+	int i;
+	u_char tmp;
+	u_char dev_id;
+	struct nand_flash_dev *type = NULL;
 #endif
+	struct s3c6410_nand *nand_reg = s3c6410_get_base_nand();
 
     if (NFCONF_REG & 0x80000000)
         boot_nand = 1;

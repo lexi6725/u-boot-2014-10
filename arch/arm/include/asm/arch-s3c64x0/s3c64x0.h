@@ -135,10 +135,11 @@ struct s3c24x0_lcd {
 };
 
 
-#ifdef CONFIG_S3C2410
+#ifdef CONFIG_S3C6410
 /* NAND FLASH (see S3C2410 manual chapter 6) */
-struct s3c2410_nand {
+struct s3c6410_nand {
 	u32	nfconf;
+	u32 nfcont;
 	u32	nfcmd;
 	u32	nfaddr;
 	u32	nfdata;
