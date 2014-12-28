@@ -112,6 +112,178 @@
 
 .globl lowlevel_init
 lowlevel_init:
+	mov r12, lr
+
+	ldr	r0, =S3C64X0_GPIO_BASE
+	ldr	r1, =0x55555555
+	str	r1, [r0, #0x800]		@ GPKCON0
+
+	ldr	r1, =0x55555555
+	str	r1, [r0, #0x804]		@GPKCON1
+
+	ldr	r1, =0x22222666
+	str	r1, [r0, #0x810]		@GPLCON0
+
+	ldr	r1, = 0x04000000
+	str	r1, [r0, #0xA0]			@ GPFCON
+	ldr	r1, =0x2000
+	str	r1, [r0, #0xA4]			@ GPFDAT
+
+	/* LED on only #8 */
+	ldr 	r1, =0x00111111
+	str	r1, [r0, #0x820]			@ GPMCON
+
+	ldr	r1, = 0x00000555
+	str	r1, [r0, #0x828]		@ GPMPUD
+
+	ldr	r1, =0x002a
+	str	r1, [r0, #0x824]		@ GPMDAT
+
+	ldr	r1, =0
+	str	r1, [r0, #0x1D4]		@ Memory Port 0 Drive strength Control Registe
+
+	/* Disable Watchdog */
+	ldr	r0, =0x7e000000		@ 0x7e004000 Watchdog cofigure register
+	orr	r0, r0, #0x4000
+	mov	r1, #0
+	str 	r1, [r0]
+
+	@ External Interrupt pending clear
+	ldr	r0, =(S3C64X0_GPIO_BASE+0x924)	// EINTPEND
+	ldr	r1, [r0]
+	str 	r1, [r0]
+
+	ldr	r0, =0x71200000			@ VIC0
+	ldr	r1, =0x71300000			@ VIC1
+
+	@ Disable all interrupts(VIC0 and VIC1)
+	mvn	r3, #0x0
+	str	r3, [r0, #0x14]			@ VIC0 INT MASK
+	str	r3, [r1, #0x14]			@ VIC1 INT MASK
+
+	@ Set all interrupts as IRQ
+	mov	r3, #0x0
+	str	r3, [r0, #0xC]				@ VIC0 INT MODE
+	str	r3, [r1, #0xC]				@ VIC1 INT MODE
+
+	@ Pending interrupt Clear
+	mov r3, #0x0
+	str	r3, [r0, #0xF00]			@ VIC0 INT ADDR
+	str	r3, [r1, #0xF00]			@ VIC1 INT ADDR
+
+	/*
+	 * Init System Clock
+	 */
+	ldr	r0, =S3C64X0_CLOCK_POWER_BASE		@ 0x7e00f000
+
+#ifdef CONIG_SYNC_MODE
+	ldr	r1, [r0, #0x900]		@ SYSCON others control register
+	mov	r2, #0x40
+	orr	r1, r1, r2
+	str	r1, [r0, #0x900]
+
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+
+	ldr	r2, =0x80
+	orr	r1, r1, r2
+	str	r1, [r0, #0x900]
+
+check_syncack:
+	ldr	r1, [r0, #0x900]
+	ldr	r2, = 0xf00
+	and	r1, r1, r2
+	cmp	r1, #0xf00
+	bne check_syncack
+
+#else	/* ASYNC Mode */
+	nop
+	nop
+	nop
+	nop
+	nop
+
+	ldr	r1, [r0, #0x900]
+	bic	r1, r1, #0xc0
+	orr	r1, r1, #0x40
+	str	r1, [r0, #0x900]
+
+wait_for_async:
+	ldr	r1, [r0, #0x900]
+	and	r1, r1, #0xf00
+	cmp	r1, #0x0
+	bne wait_for_async
+
+	ldr	r1, [r0, #0x900]
+	bic	r1, r1, #0x40
+	str	r1, [r0, #0x900]
+#endif
+
+	mov	r1, #0xff00
+	orr	r1, r1, #0xff
+	str	r1, [r0, #0]		@ APLL_LOCK
+	str	r1, [r0, #0x4]		@ MPLL_LOCK
+	str	r1, [r0, #0x8]		@ EPLL_LOCK
+/* CLKUART(=66.5Mhz) = CLKUART_input(532/2=266Mhz) / (UART_RATIO(3)+1) */
+/* CLKUART(=50Mhz) = CLKUART_input(400/2=200Mhz) / (UART_RATIO(3)+1) */
+/* Now, When you use UART CLK SRC by EXT_UCLK1, We support 532MHz & 400MHz value */
+
+#if defined(CONFIG_CLKSRC_CLKUART)
+		ldr 	r1, [r0, #0x28]			@ CLK_DIV2
+		bic r1, r1, #0x70000
+		orr r1, r1, #0x30000
+		str r1, [r0, #0x28]
+#endif
+
+	ldr   	r1, [r0, #0x20]	/*Set Clock Divider*/
+	bic	r1, r1, #0x30000
+	bic	r1, r1, #0xff00
+	bic	r1, r1, #0xff
+	ldr	r2, =CLK_DIV_VAL
+	orr	r1, r1, r2
+	str	r1, [r0, #0x20]
+
+	ldr	r1, =APLL_VAL
+	str	r1, [r0, #0x0C]		@ APLL CON
+	ldr	r1, =MPLL_VAL
+	str	r1, [r0, #0x10]		@ MPLL CON
+
+	ldr	r1, =0x80200203			/* FOUT of EPLL is 96MHz */
+	str	r1, [r0, #0x14]		@ EPLL CON0
+	ldr	r1, =0x0
+	str	r1, [r0, #0x18]		@ EPLL CON1
+
+	@ CLOCK SOURCE
+	ldr	r1, [r0, #0x1C]	/* APLL, MPLL, EPLL select to Fout */
+	
+#if defined(CONFIG_CLKSRC_CLKUART)
+		ldr r2, =0x2007
+#else
+		ldr r2, =0x7
+#endif
+	orr	r1, r1, r2
+
+	str	r1, [r0, #CLK_SRC_OFFSET]
+	
+	/* wait at least 200us to stablize all clock */
+	mov r1, #0x10000
+1:	subs	r1, r1, #1
+	bne 1b
+	
+#ifdef CONFIG_SYNC_MODE				/* Synchronization for VIC port */
+		ldr r1, [r0, #OTHERS_OFFSET]
+		orr r1, r1, #0x20
+		str r1, [r0, #OTHERS_OFFSET]
+#else
+		ldr r1, [r0, #OTHERS_OFFSET]
+		bic r1, r1, #0x20
+		str r1, [r0, #OTHERS_OFFSET]
+#endif
+	
 	/* memory control configuration */
 	/* make r0 relative the current location so that it */
 	/* reads SMRDATA out of FLASH rather than memory ! */

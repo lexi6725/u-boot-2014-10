@@ -31,7 +31,7 @@ enum s3c64x0_uarts_nr {
 /* S3C2410 device base addresses */
 #define S3C24X0_MEMCTL_BASE		0x48000000
 #define S3C64X0_USB_HOST_BASE		0x77100000
-#define S3C24X0_INTERRUPT_BASE		0x4A000000
+#define S3C64X0_INTERRUPT_BASE		0x7F008900
 #define S3C64X0_DMA_BASE		0x75000000
 #define S3C64X0_CLOCK_POWER_BASE	0x7e00f000
 #define S3C64X0_LCD_BASE		0x77100000
@@ -42,7 +42,7 @@ enum s3c64x0_uarts_nr {
 #define S3C24X0_WATCHDOG_BASE		0x53000000
 #define S3C64X0_I2C_BASE		0x7f004000
 #define S3C64X0_I2S_BASE		0x7f002000
-#define S3C24X0_GPIO_BASE		0x56000000
+#define S3C64X0_GPIO_BASE		0x7f008000
 #define S3C24X0_RTC_BASE		0x57000000
 #define S3C6410_ADC_BASE		0x7e00b000
 #define S3C64X0_SPI_BASE		0x7f00b000
@@ -51,6 +51,27 @@ enum s3c64x0_uarts_nr {
 
 /* include common stuff */
 #include <asm/arch/s3c64x0.h>
+
+// Nand FLash Configure
+#define NFCONF_ECC_MLC		(1<<24)
+
+#define NFCONF_ECC_1BIT		(0<<23)
+#define NFCONF_ECC_4BIT		(2<<23)
+#define NFCONF_ECC_8BIT		(1<<23)
+
+#define NFCONT_ECC_ENC		(1<<18)
+#define NFCONT_WP		(1<<16)
+#define NFCONT_MECCLOCK		(1<<7)
+#define NFCONT_SECCLOCK		(1<<6)
+#define NFCONT_INITMECC		(1<<5)
+#define NFCONT_INITSECC		(1<<4)
+#define NFCONT_INITECC		(NFCONT_INITMECC | NFCONT_INITSECC)
+#define NFCONT_CS_ALT		(1<<1)
+#define NFCONT_CS		(1<<1)
+#define NFSTAT_ECCENCDONE	(1<<7)
+#define NFSTAT_ECCDECDONE	(1<<6)
+#define NFSTAT_RnB		(1<<0)
+#define NFESTAT0_ECCBUSY	(1<<31)
 
 
 static inline struct s3c24x0_memctl *s3c24x0_get_base_memctl(void)
@@ -63,9 +84,9 @@ static inline struct s3c24x0_usb_host *s3c24x0_get_base_usb_host(void)
 	return (struct s3c24x0_usb_host *)S3C64X0_USB_HOST_BASE;
 }
 
-static inline struct s3c24x0_interrupt *s3c24x0_get_base_interrupt(void)
+static inline struct s3c64x0_interrupt *s3c24x0_get_base_interrupt(void)
 {
-	return (struct s3c24x0_interrupt *)S3C24X0_INTERRUPT_BASE;
+	return (struct s3c64x0_interrupt *)S3C64X0_INTERRUPT_BASE;
 }
 
 static inline struct s3c24x0_dmas *s3c24x0_get_base_dmas(void)
@@ -121,7 +142,7 @@ static inline struct s3c24x0_i2s *s3c24x0_get_base_i2s(void)
 
 static inline struct s3c24x0_gpio *s3c24x0_get_base_gpio(void)
 {
-	return (struct s3c24x0_gpio *)S3C24X0_GPIO_BASE;
+	return (struct s3c24x0_gpio *)S3C64X0_GPIO_BASE;
 }
 
 static inline struct s3c24x0_rtc *s3c24x0_get_base_rtc(void)

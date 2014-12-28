@@ -34,6 +34,49 @@
 #define CONFIG_SETUP_MEMORY_TAGS
 #define CONFIG_INITRD_TAG
 
+#define CONFIG_CLKSRC_CLKUART
+
+#define set_pll(mdiv, pdiv, sdiv)	(1<<31 | mdiv<<16 | pdiv<<8 | sdiv)
+
+#define APLL_MDIV	400
+#define APLL_PDIV	3
+#define APLL_SDIV	1
+#define CONFIG_SYNC_MODE
+
+#define APLL_VAL	set_pll(APLL_MDIV, APLL_PDIV, APLL_SDIV)
+/* prevent overflow */
+#define Startup_APLL	(CONFIG_SYS_CLK_FREQ/(APLL_PDIV<<APLL_SDIV)*APLL_MDIV)
+
+/* fixed MPLL 533MHz */
+#define MPLL_MDIV	266
+#define MPLL_PDIV	3
+#define MPLL_SDIV	1
+
+#define MPLL_VAL	set_pll(MPLL_MDIV, MPLL_PDIV, MPLL_SDIV)
+/* prevent overflow */
+#define Startup_MPLL	((CONFIG_SYS_CLK_FREQ)/(MPLL_PDIV<<MPLL_SDIV)*MPLL_MDIV)
+
+#define Startup_APLLdiv		1
+#define Startup_HCLKx2div	2
+
+#define	Startup_PCLKdiv		3
+#define Startup_HCLKdiv		1
+#define Startup_MPLLdiv		1
+
+#define CLK_DIV_VAL	((Startup_PCLKdiv<<12)|(Startup_HCLKx2div<<9)|(Startup_HCLKdiv<<8)|(Startup_MPLLdiv<<4)|Startup_APLLdiv)
+
+#if defined(CONFIG_SYNC_MODE)
+#define Startup_HCLK	(Startup_APLL/(Startup_HCLKx2div+1)/(Startup_HCLKdiv+1))
+#else
+#define Startup_HCLK	(Startup_MPLL/(Startup_HCLKx2div+1)/(Startup_HCLKdiv+1))
+#endif
+
+/*
+ * Peri Port 256M 0x70000000 - 0x7fffffff
+ */
+#define CONFIG_PERIPORT_REMAP
+#define CONFIG_PERIPORT_BASE	0x70000000
+#define CONFIG_PERIPORT_SIZE	0x13
 /*
  * Hardware drivers
  */
@@ -44,6 +87,7 @@
 #define DM9000_IO CONFIG_DM9000_BASE
 #define CONFIG_DM9000_USE_16BIT 1
 //lexi Add DM9000
+
 /*
  * select serial console configuration
  */
@@ -136,7 +180,7 @@
  */
 #define CONFIG_NR_DRAM_BANKS	1          /* we have 1 bank of DRAM */
 #define PHYS_SDRAM_1		CONFIG_SYS_MEMTEST_START /* SDRAM Bank #1 */
-#define PHYS_SDRAM_1_SIZE	0x0FFFFFFF /* 64 MB */
+#define PHYS_SDRAM_1_SIZE	0x10000000 /* 256 MB */
 
 #define PHYS_FLASH_1		0x00000000 /* Flash Bank #0 */
 
@@ -176,10 +220,12 @@
  * NAND configuration
  */
 #ifdef CONFIG_CMD_NAND
-//#define CONFIG_NAND_S3C6410
+#define CONFIG_NAND_S3C6410
 #define CONFIG_SYS_S3C6410_NAND_HWECC
 #define CONFIG_SYS_MAX_NAND_DEVICE	1
-#define CONFIG_SYS_NAND_BASE		0x4E000000
+#define CONFIG_SYS_NAND_BASE		0x70200010
+#define CONFIG_CMD_NAND_YAFFS
+
 #endif
 
 /*

@@ -55,17 +55,16 @@ struct s3c24x0_usb_host {
 
 
 /* INTERRUPT (see manual chapter 14) */
-struct s3c24x0_interrupt {
-	u32	srcpnd;
-	u32	intmod;
-	u32	intmsk;
-	u32	priority;
-	u32	intpnd;
-	u32	intoffset;
-#if defined(CONFIG_S3C2410) || defined(CONFIG_S3C2440)
-	u32	subsrcpnd;
-	u32	intsubmsk;
-#endif
+struct s3c64x0_interrupt {
+	u32	eint0con0;			// offset: 0x00
+	u32	eint0con1;
+	u32	res0[2];
+	u32	eint0fltcon0;
+	u32	eint0fltcon1;
+	u32	eint0fltcon2;
+	u32	eint0fltcon3;
+	u32	eint0mask;
+	u32	eint0pend;
 };
 
 
@@ -143,7 +142,27 @@ struct s3c6410_nand {
 	u32	nfcmd;
 	u32	nfaddr;
 	u32	nfdata;
+	u32 nfmeccd0;
+	u32 nfmeccd1;
+	u32 nfseccd;
+	u32 nfsblk;
+	u32 nfeblk;
 	u32	nfstat;
+	u32 nfestat0;
+	u32 nfestat1;
+	u32 nfmecc0;
+	u32 nfmecc1;
+	u32 nfsecc;
+	u32 nfmlcbitpt;
+	u32 nf8eccerr0;
+	u32 nf8eccerr1;
+	u32 nf8eccerr2;
+	u32 nfm8ecc0;
+	u32 nfm8ecc1;
+	u32 nfm8ecc2;
+	u32 nfm8ecc3;
+	u32 nfmlc8bitpt0;
+	u32 nfmlc8bitpt1;
 	u32	nfecc;
 };
 #endif
@@ -342,147 +361,105 @@ struct s3c24x0_i2s {
 
 /* I/O PORT (see manual chapter 9) */
 struct s3c24x0_gpio {
-#ifdef CONFIG_S3C6400
-	u32	pacon;
-	u32	padat;
-
-	u32	pbcon;
-	u32	pbdat;
-	u32	pbup;
-
-	u32	pccon;
-	u32	pcdat;
-	u32	pcup;
-
-	u32	pdcon;
-	u32	pddat;
-	u32	pdup;
-
-	u32	pecon;
-	u32	pedat;
-	u32	peup;
-
-	u32	pfcon;
-	u32	pfdat;
-	u32	pfup;
-
-	u32	pgcon;
-	u32	pgdat;
-	u32	pgup;
-
-	u32	opencr;
-
-	u32	misccr;
-	u32	extint;
-#endif
 #ifdef CONFIG_S3C6410
-	u32	gpacon;
+	u32	gpacon;			// Offset: 0x0000
 	u32	gpadat;
-	u32	res1[2];
-	u32	gpbcon;
+	u32	gpapud;
+	u32	gpaconslp;
+	u32	gpapudslp;
+	u32	res0[3];
+	u32	gpbcon;			// Offset: 0x0020
 	u32	gpbdat;
-	u32	gpbup;
-	u32	res2;
-	u32	gpccon;
+	u32	gpbpud;
+	u32	gpbconslp;
+	u32	gpbpudslp;
+	u32	res1[3];
+	u32	gpccon;			// Offset: 0x0040
 	u32	gpcdat;
-	u32	gpcup;
-	u32	res3;
-	u32	gpdcon;
+	u32	gpcpud;
+	u32	gpcconslp;
+	u32	pgcpudslp;
+	u32	res2[3];
+	u32	gpdcon;			// Offset: 0x0060
 	u32	gpddat;
-	u32	gpdup;
-	u32	res4;
-	u32	gpecon;
+	u32	gpdpud;
+	u32	gpdconslp;
+	u32	gpdpudslp;
+	u32	res3[3];
+	u32	gpecon;			// Offset: 0x0080
 	u32	gpedat;
-	u32	gpeup;
-	u32	res5;
-	u32	gpfcon;
+	u32	gpepud;
+	u32	gpeconslp;
+	u32	gpepudslp;
+	u32	res4[3];
+	u32	gpfcon;			// Offset: 0x00A0
 	u32	gpfdat;
-	u32	gpfup;
-	u32	res6;
-	u32	gpgcon;
+	u32	gpfpud;
+	u32	gpfconslp;
+	u32	gpfpudslp;
+	u32	res5[3];
+	u32	gpgcon;			// Offset: 0x00C0
 	u32	gpgdat;
-	u32	gpgup;
-	u32	res7;
-	u32	gphcon;
+	u32	gpgpud;
+	u32	gpgconslp;
+	u32	gpgpudslp;
+	u32	res6[3];
+	u32	gphcon0;		// Offset: 0x00E0
+	u32	gphcon1;
 	u32	gphdat;
 	u32	gphup;
-	u32	res8;
-
-	u32	misccr;
-	u32	dclkcon;
-	u32	extint0;
-	u32	extint1;
-	u32	extint2;
-	u32	eintflt0;
-	u32	eintflt1;
-	u32	eintflt2;
-	u32	eintflt3;
-	u32	eintmask;
-	u32	eintpend;
-	u32	gstatus0;
-	u32	gstatus1;
-	u32	gstatus2;
-	u32	gstatus3;
-	u32	gstatus4;
-#endif
-#if defined(CONFIG_S3C6440)
-	u32	gpacon;
-	u32	gpadat;
-	u32	res1[2];
-	u32	gpbcon;
-	u32	gpbdat;
-	u32	gpbup;
-	u32	res2;
-	u32	gpccon;
-	u32	gpcdat;
-	u32	gpcup;
-	u32	res3;
-	u32	gpdcon;
-	u32	gpddat;
-	u32	gpdup;
-	u32	res4;
-	u32	gpecon;
-	u32	gpedat;
-	u32	gpeup;
-	u32	res5;
-	u32	gpfcon;
-	u32	gpfdat;
-	u32	gpfup;
-	u32	res6;
-	u32	gpgcon;
-	u32	gpgdat;
-	u32	gpgup;
-	u32	res7;
-	u32	gphcon;
-	u32	gphdat;
-	u32	gphup;
-	u32	res8;
-
-	u32	misccr;
-	u32	dclkcon;
-	u32	extint0;
-	u32	extint1;
-	u32	extint2;
-	u32	eintflt0;
-	u32	eintflt1;
-	u32	eintflt2;
-	u32	eintflt3;
-	u32	eintmask;
-	u32	eintpend;
-	u32	gstatus0;
-	u32	gstatus1;
-	u32	gstatus2;
-	u32	gstatus3;
-	u32	gstatus4;
-
-	u32	res9;
-	u32	dsc0;
-	u32	dsc1;
-	u32	mslcon;
-	u32	gpjcon;
+	u32	gphconslp;
+	u32	gphpudslp;
+	u32	res7[2];
+	u32	gpicon;			// Offset: 0x0100
+	u32	gpidat;
+	u32	gpipud;
+	u32	gpiconslp;
+	u32	gpipudslp;
+	u32	res8[3];
+	u32	gpjcon;			// Offset: 0x0120
 	u32	gpjdat;
-	u32	gpjup;
-	u32	res10;
+	u32	gpjpud;
+	u32	gpjconslp;
+	u32	gpjpudslp;
+	u32	res9[3];
+	u32	gpocon;			// Offset: 0x0140
+	u32	gpodat;
+	u32	gpopud;
+	u32	gpoconslp;
+	u32	gpopudslp;
+	u32	res10[3];
+	u32	gppcon;			// Offset: 0x0160
+	u32	gppdat;
+	u32	gpppud;
+	u32	gppconslp;
+	u32	gpppudslp;
+	u32	res11[3];
+	u32	gpqcon;			// Offset: 0x0180
+	u32	gpqdat;
+	u32	gpqpud;
+	u32	gpqconslp;
+	u32	gpqpudslp;
+	u32	res12[3];
+	u32	spcon;			// Offset: 0x01A0
+	u32	res13[11];
+	u32	mem0drvcon;	// Offset: 0x01D0
+	u32	mem1drvcon;
+	u32	res14[394];
+	u32	gpkcon0;		// Offset: 0x0800
+	u32	gpkcon1;
+	u32	gpkdat;
+	u32	gpkpud;
+	u32	gplcon0;			// Offset: 0x0810
+	u32	gplcon1;
+	u32	gpldat;
+	u32	gplpud;
+	u32	gpmcon;		// Offset: 0x0820
+	u32	gpmdat;
+	u32	gpmpud;
+	u32	gpncon;		// Offset: 0x0830
+	u32	gpndat;
+	u32	gpnpud;
 #endif
 };
 
